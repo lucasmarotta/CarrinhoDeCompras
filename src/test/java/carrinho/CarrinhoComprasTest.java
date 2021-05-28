@@ -95,7 +95,7 @@ class CarrinhoComprasTest {
 			carrinhoCheio.removerItem(10.0, 1);
 		});
 		double total = carrinhoCheio.getTotal();
-		assertEquals(40.0, total);
+		assertEquals(totalCheio - 10.0, total);
 	}
 	
 	@Test
@@ -105,7 +105,7 @@ class CarrinhoComprasTest {
 			carrinhoCheio.removerItem(20.0, 1);
 		});
 		double total = carrinhoCheio.getTotal();
-		assertEquals(20.0, total);
+		assertEquals(totalCheio - 30.0, total);
 	}
 	
 	@Test
@@ -114,7 +114,7 @@ class CarrinhoComprasTest {
 			carrinhoCheio.removerItem(20.0, 2);
 		});
 		double total = carrinhoCheio.getTotal();
-		assertEquals(10.0, total);
+		assertEquals(totalCheio - 40.0, total);
 	}
 	
 	@Test
@@ -124,7 +124,7 @@ class CarrinhoComprasTest {
 			carrinhoCheio.removerItem(20.0, 1);
 		});
 		double total = carrinhoCheio.getTotal();
-		assertEquals(10.0, total);
+		assertEquals(totalCheio - 40.0, total);
 	}
 	
 	@Test
@@ -133,7 +133,7 @@ class CarrinhoComprasTest {
 			carrinhoCheio.removerItem(20.0, 0);
 		});
 		double total = carrinhoCheio.getTotal();
-		assertEquals(50.0, total);
+		assertEquals(totalCheio, total);
 	}
 	
 	@Test
@@ -143,7 +143,7 @@ class CarrinhoComprasTest {
 				() -> { carrinhoCheio.removerItem(20.0, 3); }
 		);
 		double total = carrinhoCheio.getTotal();
-		assertEquals(50.0, total);
+		assertEquals(totalCheio, total);
 	}
 	
 	@Test
@@ -153,7 +153,7 @@ class CarrinhoComprasTest {
 				() -> { carrinhoCheio.removerItem(10.0, -1); }
 		);
 		double total = carrinhoCheio.getTotal();
-		assertEquals(50.0, total);
+		assertEquals(totalCheio, total);
 	}
 	
 	////Remove item inexistente
