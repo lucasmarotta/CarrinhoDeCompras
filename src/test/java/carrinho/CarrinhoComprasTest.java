@@ -3,7 +3,7 @@ package carrinho;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.lang.reflect.Executable;
+//import java.lang.reflect.Executable;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,16 +12,20 @@ import carrinho.CarrinhoCompras;
 
 class CarrinhoComprasTest {
 	
+	private final Item itemA = new Item(10.0); //NAO MUDAR
+	private final Item itemB = new Item(20.0); //NAO MUDAR
+	private final Item itemC = new Item(15.0); //NAO MUDAR
 	private CarrinhoCompras carrinhoVazio;
-	private CarrinhoCompras carrinhoCheio; //Total = 50.0
+	private CarrinhoCompras carrinhoCheio; 
+	private final double totalVazio = 0.0;
 	private double totalCheio;
 
 	@BeforeEach
 	void setUp() throws Exception {
-		this.carrinhoVazio = new CarrinhoCompras();
-		this.carrinhoCheio = new CarrinhoCompras();
-		carrinhoCheio.adicionarItem(10.0, 1);
-		carrinhoCheio.adicionarItem(20.0, 2);
+		carrinhoVazio = new CarrinhoCompras();
+		carrinhoCheio = new CarrinhoCompras();
+		carrinhoCheio.adicionarItem(itemA, 1);
+		carrinhoCheio.adicionarItem(itemB, 2);
 		totalCheio = carrinhoCheio.getTotal();
 	}
 
@@ -32,9 +36,15 @@ class CarrinhoComprasTest {
 	}
 	
 	@Test
+	void carrinhoCheio() {
+		double total = carrinhoCheio.getTotal();
+		assertEquals(totalCheio, total);
+	}
+	
+	@Test
 	void adicionaUmItem() {
 		assertDoesNotThrow(() -> { 
-			carrinhoVazio.adicionarItem(10.0, 1); 
+			carrinhoVazio.adicionarItem(itemA, 1); 
 		});
 		
 		double total = carrinhoVazio.getTotal();
@@ -44,8 +54,8 @@ class CarrinhoComprasTest {
 	@Test
 	void adicionaDoisItensDiferentes() {
 		assertDoesNotThrow(() -> { 
-			carrinhoVazio.adicionarItem(10.0, 1);
-			carrinhoVazio.adicionarItem(20.0, 1);			
+			carrinhoVazio.adicionarItem(itemA, 1);
+			carrinhoVazio.adicionarItem(itemB, 1);			
 		});
 		double total = carrinhoVazio.getTotal();
 		assertEquals(30.0, total);
@@ -54,7 +64,7 @@ class CarrinhoComprasTest {
 	@Test
 	void adicionaDoisDoMesmoItem() {
 		assertDoesNotThrow(() -> { 
-			carrinhoVazio.adicionarItem(20.0, 2);
+			carrinhoVazio.adicionarItem(itemB, 2);
 		});
 		double total = carrinhoVazio.getTotal();
 		assertEquals(40.0, total);
@@ -63,8 +73,8 @@ class CarrinhoComprasTest {
 	@Test
 	void adicionaUmItemDuasVezes() {
 		assertDoesNotThrow(() -> { 
-			carrinhoVazio.adicionarItem(20.0, 1);
-			carrinhoVazio.adicionarItem(20.0, 1);
+			carrinhoVazio.adicionarItem(itemB, 1);
+			carrinhoVazio.adicionarItem(itemB, 1);
 		});
 		double total = carrinhoVazio.getTotal();
 		assertEquals(40.0, total);
@@ -73,7 +83,7 @@ class CarrinhoComprasTest {
 	@Test
 	void adicionaZeroDeUmItem() {
 		assertDoesNotThrow(() -> { 
-			carrinhoVazio.adicionarItem(20.0, 0);
+			carrinhoVazio.adicionarItem(itemB, 0);
 		});
 		double total = carrinhoVazio.getTotal();
 		assertEquals(0.0, total);
@@ -83,7 +93,7 @@ class CarrinhoComprasTest {
 	void adicionaQuantidadeNegativa() {	
 		assertThrows(
 				ImpossivelAdicionarException.class, 
-				() -> { carrinhoVazio.adicionarItem(10.0, -1); }
+				() -> { carrinhoVazio.adicionarItem(itemA, -1); }
 		);
 		double total = carrinhoVazio.getTotal();
 		assertEquals(0.0, total);
@@ -92,7 +102,7 @@ class CarrinhoComprasTest {
 	@Test
 	void removeUmItem() {
 		assertDoesNotThrow(() -> { 
-			carrinhoCheio.removerItem(10.0, 1);
+			carrinhoCheio.removerItem(itemA, 1);
 		});
 		double total = carrinhoCheio.getTotal();
 		assertEquals(totalCheio - 10.0, total);
@@ -101,8 +111,8 @@ class CarrinhoComprasTest {
 	@Test
 	void removeDoisItensDiferentes() {
 		assertDoesNotThrow(() -> { 
-			carrinhoCheio.removerItem(10.0, 1);
-			carrinhoCheio.removerItem(20.0, 1);
+			carrinhoCheio.removerItem(itemA, 1);
+			carrinhoCheio.removerItem(itemB, 1);
 		});
 		double total = carrinhoCheio.getTotal();
 		assertEquals(totalCheio - 30.0, total);
@@ -111,7 +121,7 @@ class CarrinhoComprasTest {
 	@Test
 	void removeDoisDoMesmoItem() {
 		assertDoesNotThrow(() -> { 
-			carrinhoCheio.removerItem(20.0, 2);
+			carrinhoCheio.removerItem(itemB, 2);
 		});
 		double total = carrinhoCheio.getTotal();
 		assertEquals(totalCheio - 40.0, total);
@@ -120,8 +130,8 @@ class CarrinhoComprasTest {
 	@Test
 	void removeUmItemDuasVezes() {
 		assertDoesNotThrow(() -> { 
-			carrinhoCheio.removerItem(20.0, 1);
-			carrinhoCheio.removerItem(20.0, 1);
+			carrinhoCheio.removerItem(itemB, 1);
+			carrinhoCheio.removerItem(itemB, 1);
 		});
 		double total = carrinhoCheio.getTotal();
 		assertEquals(totalCheio - 40.0, total);
@@ -130,33 +140,60 @@ class CarrinhoComprasTest {
 	@Test
 	void removeZeroDeUmItem() {
 		assertDoesNotThrow(() -> { 
-			carrinhoCheio.removerItem(20.0, 0);
+			carrinhoCheio.removerItem(itemB, 0);
 		});
 		double total = carrinhoCheio.getTotal();
 		assertEquals(totalCheio, total);
 	}
 	
-	@Test
-	void removeValorMaiorQueTotal() {	
-		assertThrows(
-				ImpossivelRemoverException.class, 
-				() -> { carrinhoCheio.removerItem(20.0, 3); }
-		);
-		double total = carrinhoCheio.getTotal();
-		assertEquals(totalCheio, total);
-	}
+	/*Com a nova implementção, não faz mais sentido. 
+	 * Este caso agora é coberto por removeMaisDeUmItemQueOContido()*/
+//	@Test
+//	void removeValorMaiorQueTotal() {	
+//		assertThrows(
+//				ImpossivelRemoverException.class, 
+//				() -> { carrinhoCheio.removerItem(itemB, 3); }
+//		);
+//		double total = carrinhoCheio.getTotal();
+//		assertEquals(totalCheio, total);
+//	}
 	
 	@Test
 	void removeQuantidadeNegativa() {	
 		assertThrows(
 				ImpossivelRemoverException.class, 
-				() -> { carrinhoCheio.removerItem(10.0, -1); }
+				() -> { carrinhoCheio.removerItem(itemA, -1); }
 		);
 		double total = carrinhoCheio.getTotal();
 		assertEquals(totalCheio, total);
 	}
 	
-	////Remove item inexistente
-	////Remove mais de um item que o contido
+	@Test
+	void removeItemInexistente() {	
+		assertThrows(
+				ImpossivelRemoverException.class, 
+				() -> { carrinhoCheio.removerItem(itemC, 1); }
+		);
+		double total = carrinhoCheio.getTotal();
+		assertEquals(totalCheio, total);
+	}
 	
+	@Test
+	void removeMaisDeUmItemQueOContido() {	
+		assertThrows(
+				ImpossivelRemoverException.class, 
+				() -> { carrinhoCheio.removerItem(itemA, 2); }
+		);
+		double total = carrinhoCheio.getTotal();
+		assertEquals(totalCheio, total);
+	}
+	
+	@Test
+	void removeTodosDeUmItem() {	
+		assertDoesNotThrow(() -> { 
+			carrinhoCheio.removerItem(itemB, 2);
+		});
+		double total = carrinhoCheio.getTotal();
+		assertEquals(totalCheio - 40.0, total);
+	}
 }

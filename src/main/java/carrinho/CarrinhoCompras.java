@@ -1,36 +1,61 @@
 package carrinho;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class CarrinhoCompras {
 	
-	private double total;
+	//private double total;
+	private HashMap<Item, Integer> qtdePorItem;
 	
 	public CarrinhoCompras() {
-		total = 0.0;
+//		total = 0.0;
+		qtdePorItem = new HashMap<Item, Integer>();
 	}
 	
 	public double getTotal() {
-		return this.total;
+//		return this.total;
+		double resultado = 0.0;
+		for (Map.Entry<Item, Integer> entrada: qtdePorItem.entrySet()) {
+			double valorItem = entrada.getKey().getValor();
+			int quantidade = entrada.getValue();
+			resultado += valorItem * quantidade;
+		}
+		return resultado;
 	}
 	
-	public void adicionarItem(double valor, int qtde) 
+	public void adicionarItem(Item item, int qtdeAInserir) 
 			throws ImpossivelAdicionarException 
 	{
-		if (qtde < 0)  {
+		if (qtdeAInserir < 0)  {
 			throw new ImpossivelAdicionarException();
 		}
-		this.total += valor * qtde;
+		
+		Integer qtdeAtual = qtdePorItem.get(item);
+		if (qtdeAtual == null) { 
+			qtdePorItem.put(item, qtdeAInserir);
+		} else {
+			qtdePorItem.put(item, qtdeAtual + qtdeAInserir);
+		}
+//		this.total += item.getValor() * qtdeAInserir;
 	}
 	
-	public void removerItem(double valor, int qtde) 
+	public void removerItem(Item item, int qtdeARemover) 
 			throws ImpossivelRemoverException 
 	{
-		if (qtde < 0)  {
+		if (qtdeARemover < 0)  {
 			throw new ImpossivelRemoverException();
 		}
-		double aRemover = valor * qtde;
-		if (aRemover > this.total)  {
+		Integer qtdeAtual = qtdePorItem.get(item);
+		if (qtdeAtual == null) {
 			throw new ImpossivelRemoverException();
 		}
-		this.total -= aRemover;
+		if (qtdeARemover > qtdeAtual) {
+			throw new ImpossivelRemoverException();
+		}
+		/*Como está implentado, nunca remove registro do HashMap.
+		 * Zerar quantidade e remover registro é equivalente para o cálculo do total. */
+		qtdePorItem.put(item, qtdeAtual - qtdeARemover);
+//		this.total -= item.getValor() * qtdeARemover;
 	}
 }
