@@ -1,0 +1,32 @@
+# java specific
+*.bak
+*.class
+
+#Gradle
+.gradle/
+build/
+
+# Eclipse
+*.classpath
+*.settings
+*.project
+bin/
+
+# VSCODE
+.vscode/
+
+#Windows
+*.ini
+[Tt]humbs.db
+*.DS_Store
+
+# IDEA
+*.iml
+*.ipr
+*.iws
+.idea/
+out/
+
+# Project
+layout/
+!*.gitkeep
