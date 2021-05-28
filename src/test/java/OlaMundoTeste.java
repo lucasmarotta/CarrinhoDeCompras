@@ -17,6 +17,6 @@ public class OlaMundoTeste
     public void testeOlaMundo()
     {
         Assertions.assertEquals(3, ola.metodo(2));
-        //Assertions.assertEquals(4, ola.metodo(4));
+        Assertions.assertEquals(4, ola.metodo(4));
     }
 }
